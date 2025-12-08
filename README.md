@@ -1,74 +1,31 @@
 🧵 Tailor Hub – MERN Stack Web Application
-A digital platform connecting customers with local tailors
-📌 About the Project
 
-Tailor Hub is a MERN-stack web application built as part of a KIET College Web Development Project.
-It helps local tailors go online and makes it easier for customers to book stitching and alteration services.
+Tailor Hub is a modern MERN-stack web application created for the KIET MCA Web Development Project. It is designed to help local tailors bring their services online, making it easier for customers to book stitching and alteration services digitally. The platform solves the lack of online visibility and manual order handling faced by small tailors by providing a complete online solution where tailors and customers interact seamlessly.
 
-The platform solves the biggest challenges local tailors face:
-✔ Low online visibility
-✔ Manual order management
-✔ No digital customer communication
+Tailor Hub provides secure role-based authentication for customers and tailors using JWT. Tailors can manage their service listings, upload images, set pricing, and handle customer orders by updating their progress from pending to in-progress and finally completed. Customers can browse tailor profiles, explore available services, place custom stitching or alteration requests, and track their order status through a responsive dashboard. The system is fully API-driven and offers smooth frontend-backend communication through REST APIs.
 
-Tailor Hub brings all of this into a clean and modern online system.
+The frontend is developed using React.js, supported by React Router for navigation and Axios for API requests. TailwindCSS or Bootstrap can be used for styling to ensure a clean, responsive, and modern user interface. The backend uses Node.js and Express.js, implementing secure authentication and clean API structuring. MongoDB with Mongoose is used as the primary database to store users, services, and orders, while image handling is supported via Cloudinary or Multer.
 
 🚀 Features
-👤 Authentication
+Customer Features
 
-Secure Login & Signup (JWT)
+Customers can explore local tailors, view service pricing, place orders for stitching or alterations, and track each order in real time using a dedicated dashboard.
 
-Role-based access: Customer & Tailor
+Tailor Features
 
-🧵 For Tailors
+Tailors can upload and manage their services, handle customer orders, update order progress, and improve their digital presence with profile and service images.
 
-Create & manage service listings
+Platform Capabilities
 
-Receive and manage customer orders
-
-Update order status
-(Pending → In Progress → Completed)
-
-Add service images and descriptions
-
-🛍️ For Customers
-
-Browse nearby/local tailors
-
-View services, pricing, and profiles
-
-Place custom stitching/alteration orders
-
-Track order progress in real-time
-
-🔄 General Platform Features
-
-Fully responsive UI
-
-Clean dashboards for both user types
-
-Image uploads using Cloudinary/Multer
-
-REST API backend using Express.js
+The entire platform is responsive, API-driven, visually simple, and easy to use. It includes a secure login and signup system, supports image uploads, and offers separate dashboards for customers and tailors.
 
 🛠️ Tech Stack
-🎨 Frontend
 
-React.js
+Frontend
+React.js, React Router, Axios, TailwindCSS / Bootstrap
 
-React Router
+Backend
+Node.js, Express.js, JSON Web Tokens (JWT Authentication)
 
-Axios
-
-TailwindCSS / Bootstrap
-
-⚙️ Backend
-
-Node.js
-
-Express.js
-
-JSON Web Tokens (JWT Authentication)
-
-🗄️ Database
-
-MongoDB + Mongoose
+Database
+MongoDB with Mongoose

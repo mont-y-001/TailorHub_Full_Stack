@@ -2,50 +2,56 @@
 A digital platform connecting customers with local tailors
 📌 About the Project
 
-Tailor Hub is a MERN-stack web application built for your KIET College Project.
-The platform helps local tailors go online and makes it easier for customers to book tailoring and alteration services.
+Tailor Hub is a MERN-stack web application built as part of a KIET College Web Development Project.
+It helps local tailors go online and makes it easier for customers to book stitching and alteration services.
 
-It solves the biggest problem local tailors face — discoverability and online order management.
+The platform solves the biggest challenges local tailors face:
+✔ Low online visibility
+✔ Manual order management
+✔ No digital customer communication
+
+Tailor Hub brings all of this into a clean and modern online system.
 
 🚀 Features
 👤 Authentication
 
 Secure Login & Signup (JWT)
 
-Separate roles for Customer and Tailor
+Role-based access: Customer & Tailor
 
 🧵 For Tailors
 
-Create and manage service listings
+Create & manage service listings
 
-Manage customer orders
+Receive and manage customer orders
 
-Update order status (Pending → In Progress → Completed)
+Update order status
+(Pending → In Progress → Completed)
 
-Profile and service images
+Add service images and descriptions
 
 🛍️ For Customers
 
-Browse local tailors
+Browse nearby/local tailors
 
-View tailor services & pricing
+View services, pricing, and profiles
 
 Place custom stitching/alteration orders
 
-Track order status in real-time
+Track order progress in real-time
 
-🔄 General Features
+🔄 General Platform Features
 
-Responsive UI
+Fully responsive UI
 
-Dashboard for Tailors & Customers
+Clean dashboards for both user types
 
-Image uploads (Cloudinary/Multer)
+Image uploads using Cloudinary/Multer
 
-REST APIs with Express
+REST API backend using Express.js
 
 🛠️ Tech Stack
-Frontend
+🎨 Frontend
 
 React.js
 
@@ -55,14 +61,14 @@ Axios
 
 TailwindCSS / Bootstrap
 
-Backend
+⚙️ Backend
 
 Node.js
 
 Express.js
 
-JSON Web Tokens (JWT Auth)
+JSON Web Tokens (JWT Authentication)
 
-Database
+🗄️ Database
 
 MongoDB + Mongoose

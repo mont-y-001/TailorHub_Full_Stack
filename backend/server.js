@@ -7,6 +7,10 @@ import connectDB from "./config/db.js";
 
 import contactRoutes from "./routes/contactRoutes.js";
 import appointmentRoutes from "./routes/appointmentRoutes.js";
+import serviceRoutes from "./routes/serviceRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
+
+
 
 dotenv.config();
 connectDB();
@@ -17,6 +21,8 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/contact", contactRoutes);
 app.use("/api/appointment", appointmentRoutes);
+app.use("/api/services", serviceRoutes);
+app.use("/api/users", userRoutes);
 
 app.get("/", (req, res) => res.send("TailorHub Backend Running..."));
 

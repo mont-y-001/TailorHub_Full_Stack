@@ -1,14 +1,18 @@
 import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useState } from "react";
 
 export default function Navbar() {
   const navigate = useNavigate();
   const location = useLocation();
+
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const token = localStorage.getItem("token");
   const role = localStorage.getItem("role");
 
   const logout = () => {
     localStorage.clear();
+    setMenuOpen(false);
     navigate("/login");
   };
 
@@ -24,10 +28,8 @@ export default function Navbar() {
           ✂️ <span className="text-yellow-400">TailorHUB</span>
         </Link>
 
-        {/* LINKS */}
+        {/* DESKTOP LINKS */}
         <ul className="hidden md:flex gap-6 font-medium items-center">
-
-          {/* CUSTOMER LINKS */}
           {!isProvider && (
             <>
               <li><Link to="/">Home</Link></li>
@@ -44,7 +46,6 @@ export default function Navbar() {
             </>
           )}
 
-          {/* PROVIDER LINKS */}
           {isProvider && isProviderRoute && (
             <>
               <li><Link to="/provider/dashboard">Dashboard</Link></li>
@@ -52,10 +53,7 @@ export default function Navbar() {
               <li><Link to="/provider/appointments">Appointments</Link></li>
             </>
           )}
-        </ul>
 
-        {/* AUTH */}
-        <div className="flex gap-3">
           {!token ? (
             <>
               <Link to="/login" className="border px-4 py-2 rounded-full">
@@ -76,9 +74,69 @@ export default function Navbar() {
               Logout
             </button>
           )}
-        </div>
+        </ul>
 
+        {/* HAMBURGER (MOBILE) */}
+        <button
+          className="md:hidden text-3xl"
+          onClick={() => setMenuOpen(!menuOpen)}
+        >
+          ☰
+        </button>
       </div>
+
+      {/* MOBILE MENU */}
+      {menuOpen && (
+        <div className="md:hidden bg-white px-6 pb-4 shadow">
+          <ul className="flex flex-col gap-4 font-medium">
+            {!isProvider && (
+              <>
+                <li><Link to="/" onClick={() => setMenuOpen(false)}>Home</Link></li>
+                <li><Link to="/services" onClick={() => setMenuOpen(false)}>Services</Link></li>
+                <li><Link to="/team" onClick={() => setMenuOpen(false)}>Team</Link></li>
+                <li><Link to="/about" onClick={() => setMenuOpen(false)}>About</Link></li>
+                <li><Link to="/contact" onClick={() => setMenuOpen(false)}>Contact</Link></li>
+
+                {token && (
+                  <li className="text-yellow-500 font-semibold">
+                    <Link to="/appointment" onClick={() => setMenuOpen(false)}>
+                      Appointment
+                    </Link>
+                  </li>
+                )}
+              </>
+            )}
+
+            {isProvider && isProviderRoute && (
+              <>
+                <li><Link to="/provider/dashboard" onClick={() => setMenuOpen(false)}>Dashboard</Link></li>
+                <li><Link to="/provider/services" onClick={() => setMenuOpen(false)}>My Services</Link></li>
+                <li><Link to="/provider/appointments" onClick={() => setMenuOpen(false)}>Appointments</Link></li>
+              </>
+            )}
+
+            {!token ? (
+              <>
+                <Link to="/login" onClick={() => setMenuOpen(false)}>Login</Link>
+                <Link
+                  to="/register"
+                  onClick={() => setMenuOpen(false)}
+                  className="bg-yellow-400 px-4 py-2 rounded-full font-semibold w-fit"
+                >
+                  Register
+                </Link>
+              </>
+            ) : (
+              <button
+                onClick={logout}
+                className="bg-red-500 text-white px-4 py-2 rounded-full w-fit"
+              >
+                Logout
+              </button>
+            )}
+          </ul>
+        </div>
+      )}
     </nav>
   );
 }

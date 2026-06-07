@@ -10,6 +10,7 @@ import Services from "./pages/Services";
 import Team from "./pages/Team";
 import Contact from "./pages/Contact";
 import Appointment from "./pages/Appointment";
+import AIAssistant from "./pages/AIAssistant";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 
@@ -34,6 +35,7 @@ function App() {
         <Route path="/team" element={<Team />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/appointment" element={<Appointment />} />
+        <Route path="/ai-assistant" element={<AIAssistant />} />
 
         {/* AUTH ROUTES */}
         <Route path="/login" element={<Login />} />

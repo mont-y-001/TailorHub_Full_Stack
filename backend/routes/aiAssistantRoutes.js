@@ -1,13 +1,15 @@
 import { Router } from "express";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-console.log("Gemini key configured:", Boolean(process.env.GEMINI_API_KEY));
-
 const router = Router();
 
-const genAI = process.env.GEMINI_API_KEY
-  ? new GoogleGenerativeAI(process.env.GEMINI_API_KEY)
-  : null;
+function getGenAI() {
+  const apiKey = process.env.GEMINI_API_KEY;
+  if (!apiKey) return null;
+  return new GoogleGenerativeAI(apiKey);
+}
+
+console.log("Gemini key configured:", Boolean(process.env.GEMINI_API_KEY));
 
 const SYSTEM_PROMPT = `You are a professional tailoring and fashion assistant for TailorHub. You help users with:
 
@@ -90,6 +92,7 @@ router.post("/chat", async (req, res) => {
       return res.status(400).json({ error: "Message is required" });
     }
 
+    const genAI = getGenAI();
     if (!genAI) {
       return res.json({ reply: fallbackReply(message) });
     }

@@ -44,13 +44,30 @@ export default function AIAssistant() {
         body: JSON.stringify({ message: userMessage }),
       });
 
-      const data = await res.json();
+      const contentType = res.headers.get("content-type") || "";
+      let data = {};
 
-      if (!res.ok) {
-        throw new Error(data.error || "Something went wrong");
+      if (contentType.includes("application/json")) {
+        data = await res.json();
+      } else {
+        const text = await res.text();
+        throw new Error(
+          res.status === 404
+            ? "AI chat endpoint not found. Use local backend (localhost:5000) or redeploy the backend with the latest code."
+            : `Server error (${res.status}): ${text.slice(0, 120)}`
+        );
       }
 
-      setMessages((prev) => [...prev, { role: "assistant", text: data.reply }]);
+      if (!res.ok) {
+        throw new Error(data.error || `Request failed (${res.status})`);
+      }
+
+      const reply = data.reply?.trim();
+      if (!reply) {
+        throw new Error("Assistant returned an empty response");
+      }
+
+      setMessages((prev) => [...prev, { role: "assistant", text: reply }]);
     } catch (error) {
       setMessages((prev) => [
         ...prev,
@@ -80,7 +97,7 @@ export default function AIAssistant() {
             </div>
             <div>
               <h1 className="text-2xl font-bold text-gray-800">AI Tailoring Assistant</h1>
-              <p className="text-gray-500 text-sm">Powered by OpenAI — Get expert tailoring advice instantly</p>
+              <p className="text-gray-500 text-sm">Powered by Google Gemini — Get expert tailoring advice instantly</p>
             </div>
           </div>
         </div>

@@ -8,7 +8,10 @@ const connectDB = async () => {
     console.log("MongoDB Connected");
   } catch (err) {
     console.error("MongoDB connection failed:", err.message);
-    process.exit(1);
+    if (process.env.NODE_ENV === "production") {
+      process.exit(1);
+    }
+    console.warn("Continuing without MongoDB — auth, services, and appointments will not work until DB is reachable.");
   }
 };
 

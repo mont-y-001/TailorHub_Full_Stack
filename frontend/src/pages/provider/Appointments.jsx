@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import ProviderLayout from "../../layouts/ProviderLayout";
 
 export default function Appointments() {
@@ -8,7 +8,7 @@ export default function Appointments() {
   const token = localStorage.getItem("token");
 
   /* FETCH PROVIDER APPOINTMENTS */
-  const fetchAppointments = async () => {
+  const fetchAppointments = useCallback(async () => {
     try {
       const res = await fetch(
         `${process.env.REACT_APP_API_URL}/api/appointments/provider`,
@@ -26,7 +26,7 @@ export default function Appointments() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [token]);
 
   /* UPDATE STATUS */
   const updateStatus = async (id, status) => {
@@ -48,7 +48,7 @@ export default function Appointments() {
 
   useEffect(() => {
     fetchAppointments();
-  }, []);
+  }, [fetchAppointments]);
 
   return (
     <ProviderLayout>

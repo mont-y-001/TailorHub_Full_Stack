@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import ProviderLayout from "../../layouts/ProviderLayout";
 
 export default function Services() {
@@ -19,7 +19,7 @@ export default function Services() {
   };
 
   /* FETCH MY SERVICES */
-  const fetchServices = async () => {
+  const fetchServices = useCallback(async () => {
     try {
       const res = await fetch(
         `${process.env.REACT_APP_API_URL}/api/services/my`,
@@ -29,12 +29,13 @@ export default function Services() {
           },
         }
       );
+
       const data = await res.json();
       setServices(data);
     } catch (err) {
       console.error("Failed to fetch services");
     }
-  };
+  }, [token]);
 
   /* ADD / UPDATE SERVICE */
   const submitService = async (e) => {
@@ -121,7 +122,7 @@ export default function Services() {
 
   useEffect(() => {
     fetchServices();
-  }, []);
+  }, [fetchServices]);
 
   return (
     <ProviderLayout>

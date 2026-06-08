@@ -1,5 +1,9 @@
 {
-  "dependencies": {
-    "openai": "^6.42.0"
+  "name": "tailorhub-full-stack",
+  "private": true,
+  "scripts": {
+    "build": "npm run build --prefix frontend",
+    "start:frontend": "npm start --prefix frontend",
+    "start:backend": "npm run dev --prefix backend"
   }
 }

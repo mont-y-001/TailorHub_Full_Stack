@@ -1,161 +1,183 @@
-import homeImg from "../assets/homeimg.jpeg";
+import { motion } from "framer-motion";
+import { Scissors, Target, Eye, Heart, Shield, Zap } from "lucide-react";
+import Badge from "../components/ui/Badge";
+import Card from "../components/ui/Card";
+
+const fadeUp = {
+  initial: { opacity: 0, y: 24 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true },
+  transition: { duration: 0.5, ease: "easeOut" },
+};
+
+const values = [
+  { icon: Shield, title: "Trust", desc: "We build trust through transparency and reliable service." },
+  { icon: Heart, title: "Quality", desc: "Every stitch meets our high standards of craftsmanship." },
+  { icon: Eye, title: "Transparency", desc: "Clear pricing, honest timelines, no hidden fees." },
+  { icon: Zap, title: "Innovation", desc: "Modern technology meets traditional tailoring expertise." },
+];
 
 export default function About() {
   return (
-    <div className="bg-gray-50 font-sans">
+    <div className="min-h-screen bg-surface-50">
       {/* HERO */}
-      <section className="bg-yellow-400 py-20">
-        <div className="max-w-6xl mx-auto px-6 text-center">
-          <h1 className="text-5xl font-bold text-gray-900">
-            About TailorHUB
-          </h1>
-          <p className="text-gray-800 mt-4 text-lg max-w-3xl mx-auto">
-            TailorHUB is a modern digital platform designed to connect customers
-            with skilled local tailors, making tailoring services accessible,
-            reliable, and hassle-free.
-          </p>
+      <section className="bg-gradient-to-br from-primary-500 to-primary-700 py-20 sm:py-28">
+        <div className="max-w-4xl mx-auto px-4 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
+            <Badge variant="info" className="mb-4 bg-white/20 text-white border-0">
+              About Us
+            </Badge>
+            <h1 className="text-4xl sm:text-5xl font-bold text-white">
+              About TailorHUB
+            </h1>
+            <p className="text-white/80 text-lg mt-4 max-w-2xl mx-auto">
+              A modern digital platform connecting customers with skilled local
+              tailors, making tailoring services accessible and hassle-free.
+            </p>
+          </motion.div>
         </div>
       </section>
 
       {/* OUR STORY */}
-      <section className="py-20">
-        <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
-          <div>
-            <h2 className="text-3xl font-bold mb-4">Our Story</h2>
+      <section className="py-16 sm:py-20">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <motion.div {...fadeUp}>
+              <Badge variant="info" className="mb-4">Our Story</Badge>
+              <h2 className="text-3xl font-bold text-surface-900 mb-4">
+                From a Simple Problem to a Powerful Solution
+              </h2>
+              <p className="text-surface-600 leading-relaxed mb-4">
+                TailorHUB was born from a real-life challenge faced by one of our
+                team members, <span className="font-semibold text-surface-900">Nitin Saini</span>.
+                After relocating from Gurgaon to Ghaziabad, he struggled to find a
+                reliable local tailor for daily stitching and alterations.
+              </p>
+              <p className="text-surface-600 leading-relaxed mb-4">
+                Finding a skilled tailor involved visiting multiple shops, asking
+                locals for recommendations, and still facing inconsistent quality
+                and delays. This experience highlighted a common problem faced by
+                many people when they move to a new city or locality.
+              </p>
+              <p className="text-surface-600 leading-relaxed">
+                After sharing this problem with the team, we realized the need for
+                a centralized platform where customers could easily discover
+                trusted tailors, view their services, and book appointments
+                without hassle. This led to the creation of{" "}
+                <span className="font-semibold text-surface-900">TailorHUB</span>.
+              </p>
+            </motion.div>
 
-            <p className="text-gray-600">
-              TailorHUB was born from a real-life challenge faced by one of our
-              team members, <span className="font-semibold">Nitin Saini</span>.
-              After relocating from Gurgaon to Ghaziabad, he struggled to find a
-              reliable local tailor for daily stitching and clothing alterations.
-            </p>
-
-            <p className="text-gray-600 mt-4">
-              Finding a skilled tailor involved visiting multiple shops, asking
-              locals for recommendations, and still facing inconsistent quality
-              and delays. This experience highlighted a common problem faced by
-              many people when they move to a new city or locality.
-            </p>
-
-            <p className="text-gray-600 mt-4">
-              After sharing this problem with the team, we realized the need for
-              a centralized platform where customers could easily discover
-              trusted tailors, view their services, and book appointments
-              without hassle.
-            </p>
-
-            <p className="text-gray-600 mt-4">
-              This idea led to the creation of{" "}
-              <span className="font-semibold">TailorHUB</span> — a solution that
-              bridges the gap between skilled tailors and customers by combining
-              traditional craftsmanship with modern technology.
-            </p>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              className="bg-gradient-to-br from-primary-100 to-primary-50 rounded-3xl p-8 sm:p-12 flex items-center justify-center"
+            >
+              <div className="text-center">
+                <Scissors className="w-20 h-20 text-primary-300 mx-auto mb-4" />
+                <p className="text-2xl font-bold text-primary-600">TailorHUB</p>
+                <p className="text-primary-400">Where Craftsmanship Meets Convenience</p>
+              </div>
+            </motion.div>
           </div>
-
-          <img
-            src={homeImg}
-            alt="Tailor shop"
-            className="rounded-xl shadow-lg"
-          />
         </div>
       </section>
 
       {/* MISSION & VISION */}
-      <section className="py-20 bg-white">
-        <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12">
-          <div>
-            <h2 className="text-3xl font-bold mb-4">Our Mission</h2>
-            <p className="text-gray-600">
-              Our mission is to simplify tailoring services by providing a
-              reliable platform that connects customers with verified and
-              experienced tailors. We aim to ensure quality, transparency, and
-              convenience for every user.
-            </p>
-          </div>
+      <section className="py-16 sm:py-20 bg-white">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="grid sm:grid-cols-2 gap-8">
+            <motion.div {...fadeUp}>
+              <Card className="h-full">
+                <div className="w-14 h-14 bg-primary-50 rounded-2xl flex items-center justify-center mb-4">
+                  <Target className="w-7 h-7 text-primary-500" />
+                </div>
+                <h2 className="text-2xl font-bold text-surface-900 mb-3">
+                  Our Mission
+                </h2>
+                <p className="text-surface-600 leading-relaxed">
+                  To simplify tailoring services by providing a reliable platform
+                  that connects customers with verified and experienced tailors.
+                  We ensure quality, transparency, and convenience for every user.
+                </p>
+              </Card>
+            </motion.div>
 
-          <div>
-            <h2 className="text-3xl font-bold mb-4">Our Vision</h2>
-            <p className="text-gray-600">
-              We envision TailorHUB as a leading platform for tailoring services
-              across cities, empowering local tailors with digital tools while
-              delivering exceptional experiences to customers.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* WHY CHOOSE US */}
-      <section className="py-20 bg-gray-100">
-        <div className="max-w-6xl mx-auto px-6 text-center">
-          <h2 className="text-3xl font-bold mb-4">
-            Why Choose TailorHUB?
-          </h2>
-          <p className="text-gray-600 max-w-3xl mx-auto">
-            TailorHUB focuses on trust, quality, and customer satisfaction. We
-            ensure that every tailor listed on our platform meets high standards
-            of professionalism and skill.
-          </p>
-
-          <div className="grid md:grid-cols-3 gap-10 mt-12">
-            <Card
-              title="Verified Tailors"
-              desc="All tailors are carefully verified to ensure professional quality and reliability."
-            />
-            <Card
-              title="Convenient Booking"
-              desc="Book appointments easily without visiting multiple shops or making endless calls."
-            />
-            <Card
-              title="Customer-Centric Approach"
-              desc="We prioritize customer satisfaction and continuously improve our services."
-            />
+            <motion.div {...fadeUp}>
+              <Card className="h-full">
+                <div className="w-14 h-14 bg-accent-50 rounded-2xl flex items-center justify-center mb-4">
+                  <Eye className="w-7 h-7 text-accent-500" />
+                </div>
+                <h2 className="text-2xl font-bold text-surface-900 mb-3">
+                  Our Vision
+                </h2>
+                <p className="text-surface-600 leading-relaxed">
+                  To become the leading platform for tailoring services across
+                  cities, empowering local tailors with digital tools while
+                  delivering exceptional experiences to customers.
+                </p>
+              </Card>
+            </motion.div>
           </div>
         </div>
       </section>
 
       {/* VALUES */}
-      <section className="py-20 bg-white">
-        <div className="max-w-6xl mx-auto px-6 text-center">
-          <h2 className="text-3xl font-bold mb-4">Our Core Values</h2>
+      <section className="py-16 sm:py-20">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <motion.div className="text-center mb-12" {...fadeUp}>
+            <Badge variant="info" className="mb-4">Our Values</Badge>
+            <h2 className="text-3xl sm:text-4xl font-bold text-surface-900">
+              What We Stand For
+            </h2>
+          </motion.div>
 
-          <div className="grid md:grid-cols-4 gap-8 mt-10">
-            <Value title="Trust" />
-            <Value title="Quality" />
-            <Value title="Transparency" />
-            <Value title="Innovation" />
-          </div>
+          <motion.div
+            className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6"
+            initial="initial"
+            whileInView="animate"
+            viewport={{ once: true }}
+            variants={{ animate: { transition: { staggerChildren: 0.1 } } }}
+          >
+            {values.map((v) => (
+              <motion.div
+                key={v.title}
+                variants={{
+                  initial: { opacity: 0, y: 16 },
+                  animate: { opacity: 1, y: 0 },
+                }}
+              >
+                <Card className="text-center h-full">
+                  <div className="w-12 h-12 bg-primary-50 rounded-xl flex items-center justify-center mx-auto mb-3">
+                    <v.icon className="w-6 h-6 text-primary-500" />
+                  </div>
+                  <h3 className="text-lg font-bold text-surface-900 mb-2">{v.title}</h3>
+                  <p className="text-sm text-surface-500">{v.desc}</p>
+                </Card>
+              </motion.div>
+            ))}
+          </motion.div>
         </div>
       </section>
 
-      {/* CONCLUSION */}
-      <section className="py-16 bg-yellow-400 text-center">
-        <h2 className="text-3xl font-bold">
-          TailorHUB — Where Craftsmanship Meets Convenience
-        </h2>
-        <p className="mt-3 max-w-3xl mx-auto">
-          We are committed to transforming the tailoring experience by making
-          it simpler, faster, and more reliable for everyone.
-        </p>
+      {/* CTA */}
+      <section className="py-16 sm:py-20 bg-white">
+        <div className="max-w-4xl mx-auto px-4 text-center">
+          <motion.div {...fadeUp}>
+            <h2 className="text-3xl sm:text-4xl font-bold text-surface-900">
+              TailorHUB — Where Craftsmanship Meets Convenience
+            </h2>
+            <p className="mt-4 text-surface-500 max-w-2xl mx-auto">
+              We are committed to transforming the tailoring experience by making
+              it simpler, faster, and more reliable for everyone.
+            </p>
+          </motion.div>
+        </div>
       </section>
-    </div>
-  );
-}
-
-/* COMPONENTS */
-
-function Card({ title, desc }) {
-  return (
-    <div className="bg-white p-8 rounded-xl shadow">
-      <h3 className="text-xl font-semibold">{title}</h3>
-      <p className="text-gray-600 mt-2">{desc}</p>
-    </div>
-  );
-}
-
-function Value({ title }) {
-  return (
-    <div className="bg-gray-50 p-6 rounded-xl shadow">
-      <h3 className="text-lg font-semibold">{title}</h3>
     </div>
   );
 }

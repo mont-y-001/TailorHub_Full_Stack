@@ -1,5 +1,7 @@
-import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useState } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Menu, X, User, LogOut, LayoutDashboard, Scissors } from "lucide-react";
+import Button from "./ui/Button";
 
 export default function Navbar() {
   const navigate = useNavigate();
@@ -8,6 +10,8 @@ export default function Navbar() {
 
   const token = localStorage.getItem("token");
   const role = localStorage.getItem("role");
+  const isProvider = role === "provider";
+  const isProviderRoute = location.pathname.startsWith("/provider");
 
   const logout = () => {
     localStorage.clear();
@@ -15,105 +19,178 @@ export default function Navbar() {
     navigate("/login");
   };
 
-  const isProvider = role === "provider";
-  const isProviderRoute = location.pathname.startsWith("/provider");
+  const publicLinks = [
+    { to: "/", label: "Home" },
+    { to: "/services", label: "Services" },
+    { to: "/ai-assistant", label: "🤖 AI Assistant" },
+    { to: "/about", label: "About" },
+    { to: "/contact", label: "Contact" },
+  ];
+
+  const providerLinks = [
+    { to: "/provider/dashboard", label: "Dashboard" },
+    { to: "/provider/services", label: "My Services" },
+    { to: "/provider/appointments", label: "Appointments" },
+  ];
 
   return (
-    <nav className="bg-white shadow sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+    <nav className="bg-white/80 backdrop-blur-lg border-b border-surface-100 sticky top-0 z-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="flex items-center justify-between h-16 sm:h-20">
+          {/* LOGO */}
+          <Link to="/" className="flex items-center gap-2 group">
+            <div className="w-9 h-9 bg-primary-500 rounded-xl flex items-center justify-center group-hover:bg-primary-600 transition-colors">
+              <Scissors className="w-5 h-5 text-white" />
+            </div>
+            <span className="text-xl font-bold text-surface-900">
+              Tailor<span className="text-primary-500">HUB</span>
+            </span>
+          </Link>
 
-        {/* LOGO */}
-        <Link to="/" className="text-2xl font-bold">
-          ✂️ <span className="text-yellow-400">TailorHUB</span>
-        </Link>
+          {/* DESKTOP MENU */}
+          <div className="hidden md:flex items-center gap-1">
+            {!isProvider &&
+              publicLinks.map((link) => (
+                <Link
+                  key={link.to}
+                  to={link.to}
+                  className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
+                    location.pathname === link.to
+                      ? "bg-primary-50 text-primary-600"
+                      : "text-surface-600 hover:text-surface-900 hover:bg-surface-50"
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              ))}
 
-        {/* DESKTOP MENU */}
-        <ul className="hidden md:flex gap-6 font-medium items-center">
-          {!isProvider && (
-            <>
-              <li><Link to="/">Home</Link></li>
-              <li><Link to="/services">Services</Link></li>
-              <li><Link to="/ai-assistant" className="text-yellow-500 font-semibold">🤖 AI Assistant</Link></li>
-              <li><Link to="/about">About</Link></li>
-              <li><Link to="/contact">Contact</Link></li>
-            </>
-          )}
+            {isProvider && isProviderRoute &&
+              providerLinks.map((link) => (
+                <Link
+                  key={link.to}
+                  to={link.to}
+                  className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
+                    location.pathname === link.to
+                      ? "bg-primary-50 text-primary-600"
+                      : "text-surface-600 hover:text-surface-900 hover:bg-surface-50"
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              ))}
 
-          {isProvider && isProviderRoute && (
-            <>
-              <li><Link to="/provider/dashboard">Dashboard</Link></li>
-              <li><Link to="/provider/services">My Services</Link></li>
-              <li><Link to="/provider/appointments">Appointments</Link></li>
-            </>
-          )}
+            <div className="ml-4 flex items-center gap-3">
+              {!token ? (
+                <>
+                  <Link to="/login">
+                    <Button variant="ghost" size="sm">
+                      Login
+                    </Button>
+                  </Link>
+                  <Link to="/register">
+                    <Button size="sm">Register</Button>
+                  </Link>
+                </>
+              ) : (
+                <div className="flex items-center gap-2">
+                  {isProvider && (
+                    <Link to="/provider/dashboard">
+                      <Button variant="ghost" size="sm">
+                        <LayoutDashboard className="w-4 h-4" />
+                        Dashboard
+                      </Button>
+                    </Link>
+                  )}
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={logout}
+                    className="text-red-500 hover:text-red-600 hover:bg-red-50"
+                  >
+                    <LogOut className="w-4 h-4" />
+                    Logout
+                  </Button>
+                </div>
+              )}
+            </div>
+          </div>
 
-          {!token ? (
-            <>
-              <Link to="/login" className="border px-4 py-2 rounded-full">Login</Link>
-              <Link to="/register" className="bg-yellow-400 px-4 py-2 rounded-full font-semibold">
-                Register
-              </Link>
-            </>
-          ) : (
-            <button onClick={logout} className="bg-red-500 text-white px-4 py-2 rounded-full">
-              Logout
-            </button>
-          )}
-        </ul>
-
-        {/* HAMBURGER */}
-        <button
-          className="md:hidden text-3xl"
-          onClick={() => setMenuOpen(!menuOpen)}
-        >
-          ☰
-        </button>
+          {/* MOBILE HAMBURGER */}
+          <button
+            className="md:hidden p-2 rounded-xl hover:bg-surface-100 transition-colors"
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label="Toggle menu"
+          >
+            {menuOpen ? (
+              <X className="w-6 h-6 text-surface-700" />
+            ) : (
+              <Menu className="w-6 h-6 text-surface-700" />
+            )}
+          </button>
+        </div>
       </div>
 
       {/* MOBILE MENU */}
       {menuOpen && (
-        <div className="md:hidden absolute top-full left-0 w-full bg-white shadow px-6 py-4">
-          <ul className="flex flex-col gap-4 font-medium">
-
-            {!isProvider && (
-              <>
-                <Link to="/" onClick={() => setMenuOpen(false)}>Home</Link>
-                <Link to="/services" onClick={() => setMenuOpen(false)}>Services</Link>
-                <Link to="/ai-assistant" onClick={() => setMenuOpen(false)} className="text-yellow-500 font-semibold">🤖 AI Assistant</Link>
-                <Link to="/about" onClick={() => setMenuOpen(false)}>About</Link>
-                <Link to="/contact" onClick={() => setMenuOpen(false)}>Contact</Link>
-              </>
-            )}
-
-            {isProvider && isProviderRoute && (
-              <>
-                <Link to="/provider/dashboard" onClick={() => setMenuOpen(false)}>Dashboard</Link>
-                <Link to="/provider/services" onClick={() => setMenuOpen(false)}>My Services</Link>
-                <Link to="/provider/appointments" onClick={() => setMenuOpen(false)}>Appointments</Link>
-              </>
-            )}
-
-            {!token ? (
-              <>
-                <Link to="/login" onClick={() => setMenuOpen(false)}>Login</Link>
+        <div className="md:hidden border-t border-surface-100 bg-white">
+          <div className="px-4 py-4 space-y-1">
+            {!isProvider &&
+              publicLinks.map((link) => (
                 <Link
-                  to="/register"
+                  key={link.to}
+                  to={link.to}
                   onClick={() => setMenuOpen(false)}
-                  className="bg-yellow-400 px-4 py-2 rounded-full font-semibold w-fit"
+                  className={`block px-4 py-3 rounded-xl text-sm font-medium transition-all ${
+                    location.pathname === link.to
+                      ? "bg-primary-50 text-primary-600"
+                      : "text-surface-600 hover:bg-surface-50"
+                  }`}
                 >
-                  Register
+                  {link.label}
                 </Link>
-              </>
-            ) : (
-              <button
-                onClick={logout}
-                className="bg-red-500 text-white px-4 py-2 rounded-full w-fit"
-              >
-                Logout
-              </button>
-            )}
+              ))}
 
-          </ul>
+            {isProvider && isProviderRoute &&
+              providerLinks.map((link) => (
+                <Link
+                  key={link.to}
+                  to={link.to}
+                  onClick={() => setMenuOpen(false)}
+                  className={`block px-4 py-3 rounded-xl text-sm font-medium transition-all ${
+                    location.pathname === link.to
+                      ? "bg-primary-50 text-primary-600"
+                      : "text-surface-600 hover:bg-surface-50"
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              ))}
+
+            <div className="pt-3 border-t border-surface-100 space-y-2">
+              {!token ? (
+                <>
+                  <Link to="/login" onClick={() => setMenuOpen(false)}>
+                    <Button variant="secondary" className="w-full">
+                      <User className="w-4 h-4" />
+                      Login
+                    </Button>
+                  </Link>
+                  <Link to="/register" onClick={() => setMenuOpen(false)}>
+                    <Button className="w-full">Register</Button>
+                  </Link>
+                </>
+              ) : (
+                <Button
+                  variant="danger"
+                  className="w-full"
+                  onClick={logout}
+                >
+                  <LogOut className="w-4 h-4" />
+                  Logout
+                </Button>
+              )}
+            </div>
+          </div>
         </div>
       )}
     </nav>

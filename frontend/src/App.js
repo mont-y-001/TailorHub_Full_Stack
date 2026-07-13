@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import { ToastProvider } from "./components/ui/Toast";
 
 /* Public Pages */
 import Home from "./pages/Home";
@@ -24,51 +25,53 @@ import ProviderRoute from "./routes/ProviderRoute";
 function App() {
   return (
     <BrowserRouter>
-      <Navbar />
+      <ToastProvider>
+        <Navbar />
 
-      <Routes>
-        {/* PUBLIC ROUTES */}
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/services" element={<Services />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/appointment" element={<Appointment />} />
-        <Route path="/ai-assistant" element={<AIAssistant />} />
+        <Routes>
+          {/* PUBLIC ROUTES */}
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/services" element={<Services />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/appointment" element={<Appointment />} />
+          <Route path="/ai-assistant" element={<AIAssistant />} />
 
-        {/* AUTH ROUTES */}
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+          {/* AUTH ROUTES */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
 
-        {/* PROVIDER ROUTES (PROTECTED) */}
-        <Route
-          path="/provider/dashboard"
-          element={
-            <ProviderRoute>
-              <Dashboard />
-            </ProviderRoute>
-          }
-        />
+          {/* PROVIDER ROUTES (PROTECTED) */}
+          <Route
+            path="/provider/dashboard"
+            element={
+              <ProviderRoute>
+                <Dashboard />
+              </ProviderRoute>
+            }
+          />
 
-        <Route
-          path="/provider/services"
-          element={
-            <ProviderRoute>
-              <ProviderServices />
-            </ProviderRoute>
-          }
-        />
+          <Route
+            path="/provider/services"
+            element={
+              <ProviderRoute>
+                <ProviderServices />
+              </ProviderRoute>
+            }
+          />
 
-        <Route
-          path="/provider/appointments"
-          element={
-            <ProviderRoute>
-              <ProviderAppointments />
-            </ProviderRoute>
-          }
-        />
-      </Routes>
+          <Route
+            path="/provider/appointments"
+            element={
+              <ProviderRoute>
+                <ProviderAppointments />
+              </ProviderRoute>
+            }
+          />
+        </Routes>
 
-      <Footer />
+        <Footer />
+      </ToastProvider>
     </BrowserRouter>
   );
 }

@@ -34,7 +34,6 @@ export default function Navbar() {
               <li><Link to="/">Home</Link></li>
               <li><Link to="/services">Services</Link></li>
               <li><Link to="/ai-assistant" className="text-yellow-500 font-semibold">🤖 AI Assistant</Link></li>
-              <li><Link to="/team">Team</Link></li>
               <li><Link to="/about">About</Link></li>
               <li><Link to="/contact">Contact</Link></li>
             </>
@@ -81,7 +80,6 @@ export default function Navbar() {
                 <Link to="/" onClick={() => setMenuOpen(false)}>Home</Link>
                 <Link to="/services" onClick={() => setMenuOpen(false)}>Services</Link>
                 <Link to="/ai-assistant" onClick={() => setMenuOpen(false)} className="text-yellow-500 font-semibold">🤖 AI Assistant</Link>
-                <Link to="/team" onClick={() => setMenuOpen(false)}>Team</Link>
                 <Link to="/about" onClick={() => setMenuOpen(false)}>About</Link>
                 <Link to="/contact" onClick={() => setMenuOpen(false)}>Contact</Link>
               </>

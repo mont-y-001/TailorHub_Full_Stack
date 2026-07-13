@@ -5,10 +5,10 @@ export default function Appointments() {
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const token = localStorage.getItem("token");
-
   /* FETCH PROVIDER APPOINTMENTS */
   const fetchAppointments = useCallback(async () => {
+    const token = localStorage.getItem("token");
+
     try {
       const res = await fetch(
         `${process.env.REACT_APP_API_URL}/api/appointments/provider`,
@@ -26,10 +26,12 @@ export default function Appointments() {
     } finally {
       setLoading(false);
     }
-  }, [token]);
+  }, []);
 
   /* UPDATE STATUS */
-  const updateStatus = async (id, status) => {
+  const updateStatus = useCallback(async (id, status) => {
+    const token = localStorage.getItem("token");
+
     try {
       await fetch(`${process.env.REACT_APP_API_URL}/api/appointments/${id}`, {
         method: "PUT",
@@ -44,7 +46,7 @@ export default function Appointments() {
     } catch (err) {
       alert("Failed to update status");
     }
-  };
+  }, [fetchAppointments]);
 
   useEffect(() => {
     fetchAppointments();

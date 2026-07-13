@@ -10,8 +10,6 @@ export default function Services() {
   const [price, setPrice] = useState("");
   const [image, setImage] = useState(null);
 
-  const token = localStorage.getItem("token");
-
   /* IMAGE HANDLER */
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
@@ -20,6 +18,8 @@ export default function Services() {
 
   /* FETCH MY SERVICES */
   const fetchServices = useCallback(async () => {
+    const token = localStorage.getItem("token");
+
     try {
       const res = await fetch(
         `${process.env.REACT_APP_API_URL}/api/services/my`,
@@ -35,10 +35,10 @@ export default function Services() {
     } catch (err) {
       console.error("Failed to fetch services");
     }
-  }, [token]);
+  }, []);
 
   /* ADD / UPDATE SERVICE */
-  const submitService = async (e) => {
+  const submitService = useCallback(async (e) => {
     e.preventDefault();
 
     if (!title || !price) {
@@ -50,6 +50,8 @@ export default function Services() {
       alert("Image is required");
       return;
     }
+
+    const token = localStorage.getItem("token");
 
     try {
       const url = editingId
@@ -87,10 +89,12 @@ export default function Services() {
     } catch (err) {
       alert("Network error");
     }
-  };
+  }, [title, description, price, image, editingId, fetchServices]);
 
   /* DELETE SERVICE */
-  const deleteService = async (id) => {
+  const deleteService = useCallback(async (id) => {
+    const token = localStorage.getItem("token");
+
     if (!window.confirm("Delete this service?")) return;
 
     await fetch(`${process.env.REACT_APP_API_URL}/api/services/${id}`, {
@@ -101,7 +105,7 @@ export default function Services() {
     });
 
     fetchServices();
-  };
+  }, [fetchServices]);
 
   /* EDIT SERVICE */
   const editService = (s) => {

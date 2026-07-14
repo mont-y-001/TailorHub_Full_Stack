@@ -2,15 +2,12 @@ import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  Calendar,
   Clock,
   User,
-  Scissors,
   CheckCircle2,
   ChevronRight,
   ArrowLeft,
   Star,
-  MapPin,
 } from "lucide-react";
 import Button from "../components/ui/Button";
 import Card from "../components/ui/Card";
@@ -31,6 +28,7 @@ export default function Appointment() {
   const [selectedService, setSelectedService] = useState(null);
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedTime, setSelectedTime] = useState("");
+  const [phone, setPhone] = useState("");
   const [services, setServices] = useState([]);
   const [tailors, setTailors] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -43,19 +41,24 @@ export default function Appointment() {
   }, [searchParams]);
 
   useEffect(() => {
-    const fetchServices = async () => {
+    const fetchData = async () => {
       try {
-        const res = await fetch(
-          `${process.env.REACT_APP_API_URL}/api/services`
-        );
-        const data = await res.json();
-        setServices(Array.isArray(data) ? data : []);
+        const [servicesRes, tailorsRes] = await Promise.all([
+          fetch(`${process.env.REACT_APP_API_URL}/api/services`),
+          fetch(`${process.env.REACT_APP_API_URL}/api/users/providers`),
+        ]);
+
+        const servicesData = await servicesRes.json();
+        const tailorsData = await tailorsRes.json();
+
+        setServices(Array.isArray(servicesData) ? servicesData : []);
+        setTailors(Array.isArray(tailorsData) ? tailorsData : []);
       } catch (err) {
-        console.error("Failed to fetch services", err);
+        console.error("Failed to fetch data", err);
       }
     };
 
-    fetchServices();
+    fetchData();
   }, []);
 
   const timeSlots = [
@@ -63,15 +66,60 @@ export default function Appointment() {
     "01:00 PM", "02:00 PM", "03:00 PM", "04:00 PM", "05:00 PM",
   ];
 
-  const nextStep = () => setCurrentStep((prev) => Math.min(prev + 1, 4));
+  const nextStep = () => setCurrentStep((prev) => Math.min(prev + 1, 5));
   const prevStep = () => setCurrentStep((prev) => Math.max(prev - 1, 0));
 
   const handleSubmit = async () => {
     setLoading(true);
-    setTimeout(() => {
-      alert("Appointment booked successfully!");
+
+    try {
+      const token = localStorage.getItem("token");
+
+      const appointmentData = {
+        provider: selectedTailor._id,
+        service: selectedService._id,
+        serviceTitle: selectedService.title,
+        servicePrice: selectedService.price,
+        date: selectedDate,
+        timeSlot: selectedTime,
+        phone: phone,
+        message: "",
+      };
+
+      const res = await fetch(
+        `${process.env.REACT_APP_API_URL}/api/appointments`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(appointmentData),
+        }
+      );
+
+      if (res.ok) {
+        const data = await res.json();
+        console.log("Appointment created successfully:", data);
+        alert("Appointment booked successfully!");
+        // Reset form or redirect
+        setSelectedTailor(null);
+        setSelectedService(null);
+        setSelectedDate("");
+        setSelectedTime("");
+        setPhone("");
+        setCurrentStep(0);
+      } else {
+        const error = await res.json();
+        console.error("Failed to create appointment:", error);
+        alert(error.message || "Failed to book appointment");
+      }
+    } catch (err) {
+      console.error("Booking error:", err);
+      alert("Failed to book appointment. Please try again.");
+    } finally {
       setLoading(false);
-    }, 1500);
+    }
   };
 
   return (
@@ -297,8 +345,49 @@ export default function Appointment() {
                 </div>
               )}
 
-              {/* STEP 5: Confirm */}
+              {/* STEP 5: Phone Number */}
               {currentStep === 4 && (
+                <div className="space-y-6">
+                  <h2 className="text-2xl font-bold text-surface-900">
+                    Your Phone Number
+                  </h2>
+                  <Card>
+                    <div>
+                      <label className="block text-sm font-semibold text-surface-800 mb-1.5">
+                        Phone Number <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="tel"
+                        placeholder="Enter your phone number"
+                        value={phone}
+                        onChange={(e) => setPhone(e.target.value)}
+                        className="w-full px-4 py-3 bg-white border-2 border-surface-200 rounded-xl text-surface-900 placeholder:text-surface-400 focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20"
+                        required
+                      />
+                    </div>
+                  </Card>
+                  <div className="flex gap-3">
+                    <Button
+                      variant="secondary"
+                      onClick={prevStep}
+                      className="flex-1"
+                    >
+                      <ArrowLeft className="w-5 h-5" />
+                      Back
+                    </Button>
+                    <Button
+                      onClick={nextStep}
+                      className="flex-1"
+                    >
+                      Continue
+                      <ChevronRight className="w-5 h-5" />
+                    </Button>
+                  </div>
+                </div>
+              )}
+
+              {/* STEP 6: Confirm */}
+              {currentStep === 5 && (
                 <div className="space-y-6">
                   <h2 className="text-2xl font-bold text-surface-900">
                     Confirm Booking
@@ -321,6 +410,12 @@ export default function Appointment() {
                         <span className="text-surface-500">Time</span>
                         <span className="font-semibold text-surface-900">
                           {selectedTime}
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-between pb-4 border-b border-surface-100">
+                        <span className="text-surface-500">Phone</span>
+                        <span className="font-semibold text-surface-900">
+                          {phone}
                         </span>
                       </div>
                       <div className="flex items-center justify-between">

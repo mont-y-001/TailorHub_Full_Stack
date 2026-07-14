@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Mail, Phone, MapPin, Send, Clock, MessageCircle } from "lucide-react";
+import { Mail, Phone, MapPin, Send } from "lucide-react";
 import Button from "../components/ui/Button";
 import Input from "../components/ui/Input";
 import Card from "../components/ui/Card";
@@ -31,7 +31,7 @@ export default function Contact() {
     <div className="min-h-screen bg-surface-50">
       {/* HERO */}
       <section className="bg-gradient-to-br from-primary-500 to-primary-700 py-20 sm:py-28">
-        <div className="max-w-4xl mx-auto px-4 text-center">
+        <div className="max-w-3xl mx-auto px-4 text-center">
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}

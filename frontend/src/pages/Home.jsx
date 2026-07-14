@@ -16,7 +16,7 @@ import {
 import Button from "../components/ui/Button";
 import Card from "../components/ui/Card";
 import Badge from "../components/ui/Badge";
-import homeImg from "../assets/homeimg.jpeg";
+import homeImg from "../assets/homeImg.jpg";
 
 const fadeUp = {
   initial: { opacity: 0, y: 24 },

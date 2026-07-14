@@ -40,22 +40,33 @@ export default function Dashboard() {
     const fetchData = async () => {
       try {
         const res = await fetch(
-          `${process.env.REACT_APP_API_URL}/api/appointments/my`,
+          `${process.env.REACT_APP_API_URL}/api/appointments/provider`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         const data = await res.json();
         setAppointments(Array.isArray(data) ? data : []);
 
         const today = new Date().toDateString();
+        
+        // Fetch services to get prices for revenue calculation
+        const servicesRes = await fetch(`${process.env.REACT_APP_API_URL}/api/services`);
+        const servicesData = await servicesRes.json();
+        const servicesMap = Array.isArray(servicesData) 
+          ? servicesData.reduce((acc, s) => ({ ...acc, [s._id]: s.price }), {})
+          : {};
+
         setStats({
           todayAppointments: data.filter(
             (a) => new Date(a.date).toDateString() === today
           ).length,
-          pendingOrders: data.filter((a) => a.status === "pending").length,
+          pendingOrders: data.filter((a) => a.status === "pending" || a.status === "approved").length,
           completedOrders: data.filter((a) => a.status === "completed").length,
           revenue: data
             .filter((a) => a.status === "completed")
-            .reduce((sum, a) => sum + (a.price || 0), 0),
+            .reduce((sum, a) => {
+              const servicePrice = servicesMap[a.service] || 0;
+              return sum + servicePrice;
+            }, 0),
         });
       } catch (err) {
         console.error("Failed to fetch dashboard data", err);
@@ -65,6 +76,21 @@ export default function Dashboard() {
     };
 
     fetchData();
+
+    // Auto-refresh dashboard every 30 seconds to show real-time updates
+    const interval = setInterval(fetchData, 30000);
+
+    // Listen for appointment status changes to refresh immediately
+    const handleStatusChange = () => {
+      fetchData();
+    };
+
+    window.addEventListener('appointmentStatusChanged', handleStatusChange);
+
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener('appointmentStatusChanged', handleStatusChange);
+    };
   }, []);
 
   const statCards = [

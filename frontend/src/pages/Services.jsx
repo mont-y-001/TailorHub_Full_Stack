@@ -1,16 +1,9 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Scissors, Star, MapPin, Clock, Search, Filter } from "lucide-react";
+import { Scissors, Star, Search } from "lucide-react";
 import Card from "../components/ui/Card";
 import Badge from "../components/ui/Badge";
 import Button from "../components/ui/Button";
-
-const fadeUp = {
-  initial: { opacity: 0, y: 24 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true },
-  transition: { duration: 0.5, ease: "easeOut" },
-};
 
 const categories = [
   "All",
@@ -68,7 +61,7 @@ export default function Services() {
     <div className="min-h-screen bg-surface-50">
       {/* HERO */}
       <section className="bg-gradient-to-br from-primary-500 to-primary-700 py-20 sm:py-28">
-        <div className="max-w-4xl mx-auto px-4 text-center">
+        <div className="max-w-3xl mx-auto px-4 text-center">
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
@@ -80,7 +73,7 @@ export default function Services() {
               Professional Tailoring Services
             </h1>
             <p className="text-white/80 text-lg mt-4 max-w-2xl mx-auto">
-              Browse our wide range of services offered by expert tailors
+              From simple alterations to bespoke creations, we've got you covered
             </p>
           </motion.div>
         </div>

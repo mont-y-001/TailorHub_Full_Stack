@@ -32,7 +32,7 @@ export default function ProviderAppointments() {
       try {
         const token = localStorage.getItem("token");
         const res = await fetch(
-          `${process.env.REACT_APP_API_URL}/api/appointments/my`,
+          `${process.env.REACT_APP_API_URL}/api/appointments/provider`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         const data = await res.json();
@@ -67,10 +67,11 @@ export default function ProviderAppointments() {
   const updateStatus = async (id, newStatus) => {
     try {
       const token = localStorage.getItem("token");
-      await fetch(
-        `${process.env.REACT_APP_API_URL}/api/appointments/${id}/status`,
+      
+      const res = await fetch(
+        `${process.env.REACT_APP_API_URL}/api/appointments/${id}`,
         {
-          method: "PATCH",
+          method: "PUT",
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
@@ -79,22 +80,33 @@ export default function ProviderAppointments() {
         }
       );
 
+      if (!res.ok) {
+        const error = await res.json();
+        alert(error.message || "Failed to update status");
+        return;
+      }
+
+      // Update local state
       setAppointments((prev) =>
         prev.map((apt) =>
           apt._id === id ? { ...apt, status: newStatus } : apt
         )
       );
+
+      // Dispatch custom event to notify dashboard of status change
+      window.dispatchEvent(new CustomEvent('appointmentStatusChanged'));
     } catch (err) {
       console.error("Failed to update status", err);
+      alert("Failed to update status. Please try again.");
     }
   };
 
   const getStatusBadge = (status) => {
     const variants = {
       pending: "warning",
-      confirmed: "info",
+      approved: "info",
       completed: "success",
-      cancelled: "danger",
+      rejected: "danger",
     };
     return <Badge variant={variants[status] || "default"}>{status}</Badge>;
   };
@@ -127,7 +139,7 @@ export default function ProviderAppointments() {
           </div>
 
           <div className="flex gap-2">
-            {["all", "pending", "confirmed", "completed", "cancelled"].map(
+            {["all", "pending", "approved", "completed", "rejected"].map(
               (status) => (
                 <button
                   key={status}
@@ -212,7 +224,7 @@ export default function ProviderAppointments() {
                         <div className="flex gap-2">
                           <Button
                             size="sm"
-                            onClick={() => updateStatus(apt._id, "confirmed")}
+                            onClick={() => updateStatus(apt._id, "approved")}
                           >
                             <CheckCircle2 className="w-4 h-4" />
                             Accept
@@ -220,14 +232,14 @@ export default function ProviderAppointments() {
                           <Button
                             variant="danger"
                             size="sm"
-                            onClick={() => updateStatus(apt._id, "cancelled")}
+                            onClick={() => updateStatus(apt._id, "rejected")}
                           >
                             <XCircle className="w-4 h-4" />
                           </Button>
                         </div>
                       )}
 
-                      {apt.status === "confirmed" && (
+                      {apt.status === "approved" && (
                         <Button
                           size="sm"
                           onClick={() => updateStatus(apt._id, "completed")}

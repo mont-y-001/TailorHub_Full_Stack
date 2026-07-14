@@ -1,7 +1,8 @@
 import { motion } from "framer-motion";
-import { Scissors, Target, Eye, Heart, Shield, Zap } from "lucide-react";
+import { Target, Eye, Heart, Shield, Zap } from "lucide-react";
 import Badge from "../components/ui/Badge";
 import Card from "../components/ui/Card";
+import tailorhubImg from "../assets/tailorhub.png";
 
 const team = [
   {
@@ -50,7 +51,7 @@ export default function About() {
     <div className="min-h-screen bg-surface-50">
       {/* HERO */}
       <section className="bg-gradient-to-br from-primary-500 to-primary-700 py-20 sm:py-28">
-        <div className="max-w-4xl mx-auto px-4 text-center">
+        <div className="max-w-3xl mx-auto px-4 text-center">
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
@@ -105,11 +106,11 @@ export default function About() {
               viewport={{ once: true }}
               className="bg-gradient-to-br from-primary-100 to-primary-50 rounded-3xl p-8 sm:p-12 flex items-center justify-center"
             >
-              <div className="text-center">
-                <Scissors className="w-20 h-20 text-primary-300 mx-auto mb-4" />
-                <p className="text-2xl font-bold text-primary-600">TailorHUB</p>
-                <p className="text-primary-400">Where Craftsmanship Meets Convenience</p>
-              </div>
+              <img
+                src={tailorhubImg}
+                alt="TailorHUB"
+                className="w-full h-auto max-w-md object-contain"
+              />
             </motion.div>
           </div>
         </div>

@@ -75,6 +75,7 @@ router.put("/:id", protect, async (req, res) => {
 
     res.json({ success: true, appointment });
   } catch (err) {
+    console.error("UPDATE STATUS ERROR:", err);
     res.status(500).json({ message: err.message });
   }
 });

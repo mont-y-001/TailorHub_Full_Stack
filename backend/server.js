@@ -38,4 +38,8 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Backend running on port ${PORT}`);
   console.log("CLOUDINARY_CLOUD_NAME:", process.env.CLOUDINARY_CLOUD_NAME);
+  console.log("GEMINI_API_KEY configured:", Boolean(process.env.GEMINI_API_KEY));
+  if (process.env.GEMINI_API_KEY) {
+    console.log("GEMINI_API_KEY starts with:", process.env.GEMINI_API_KEY.substring(0, 10) + "...");
+  }
 });
